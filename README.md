@@ -30,7 +30,7 @@ This Streamlit app allows you to upload multiple images or entire folders and co
 
 ## Running the App
 
-Run the Streamlit app:
+    Run the Streamlit app:
     ```bash
     streamlit run streamlit_app.py
 
