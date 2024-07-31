@@ -100,7 +100,7 @@ def clean_up(directory):
 
 # Streamlit app layout
 st.title("🖼️ Web Image Compressor")
-st.write("**Compressing images** before uploading is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
+st.write("**Compressing images** before uploading to your website is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
 st.header("How to use")
 st.write("""
 1. Upload multiple images or entire folders.
