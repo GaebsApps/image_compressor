@@ -173,6 +173,10 @@ st.markdown(
                 margin-top: 30px;
                 margin-bottom: 20px;
             }
+            
+            h2{
+                font-family: "DM Serif Display", serif;
+            }
     
             @media (min-width: 1320px) {
                 h1 {
