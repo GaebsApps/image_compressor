@@ -4,10 +4,13 @@ import zipfile
 from PIL import Image, ExifTags
 import fitz  # PyMuPDF
 
+
 def resize_images_in_directory(directory, target_size, quality):
     compressed_folder = os.path.join(directory, "compressed_images")
     os.makedirs(compressed_folder, exist_ok=True)
-    
+
+    compressed_files = []  # Store paths of compressed files
+
     for root, dirs, files in os.walk(directory):
         images = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg', '.pdf', '.tif', '.tiff'))]
 
@@ -15,7 +18,7 @@ def resize_images_in_directory(directory, target_size, quality):
             # Skip already compressed images
             if 'compressed' in image_file:
                 continue
-            
+
             try:
                 image_path = os.path.join(root, image_file)
                 if image_file.lower().endswith('.pdf'):
@@ -29,6 +32,7 @@ def resize_images_in_directory(directory, target_size, quality):
                         new_file_name = f"{os.path.splitext(image_file)[0]}_page_{page_num}_compressed.jpg"
                         new_file_path = os.path.join(compressed_folder, new_file_name)
                         pdf_image.save(new_file_path, 'JPEG', quality=quality)
+                        compressed_files.append(new_file_path)
                 else:
                     with Image.open(image_path) as img:
                         if image_file.lower().endswith(('.jpg', '.jpeg', '.png')):
@@ -69,25 +73,26 @@ def resize_images_in_directory(directory, target_size, quality):
                             new_file_path = os.path.join(compressed_folder, new_file_name + '.png')
                             resized_img.save(new_file_path, 'PNG')
                         else:
-                            # Convert RGBA to RGB if necessary and save as JPEG
-                            if resized_img.mode == 'RGBA':
+                            # Convert P or RGBA to RGB if necessary and save as JPEG
+                            if resized_img.mode in ('P', 'RGBA'):
                                 resized_img = resized_img.convert('RGB')
                             new_file_path = os.path.join(compressed_folder, new_file_name + '.jpg')
                             resized_img.save(new_file_path, 'JPEG', quality=quality)
-
+                        compressed_files.append(new_file_path)
             except Exception as e:
                 st.error(f"Error processing {image_file}: {e}")
 
-    return compressed_folder
+    return compressed_folder, compressed_files
 
 
 def zip_folder(folder_path, zip_path):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(folder_path):
             for file in files:
-                zipf.write(os.path.join(root, file), 
-                           os.path.relpath(os.path.join(root, file), 
-                           os.path.join(folder_path, '..')))
+                zipf.write(os.path.join(root, file),
+                           os.path.relpath(os.path.join(root, file),
+                                           os.path.join(folder_path, '..')))
+
 
 def clean_up(directory):
     for root, dirs, files in os.walk(directory, topdown=False):
@@ -98,10 +103,12 @@ def clean_up(directory):
     if os.path.exists(directory):
         os.rmdir(directory)
 
+
 # Streamlit app layout
 st.title("Web Image Optimizer")
 
-uploaded_files = st.file_uploader("Upload multiple images", type=['png', 'jpg', 'jpeg', 'pdf', 'tif', 'tiff'], accept_multiple_files=True)
+uploaded_files = st.file_uploader("Upload multiple images", type=['png', 'jpg', 'jpeg', 'pdf', 'tif', 'tiff'],
+                                  accept_multiple_files=True)
 
 st.write("")
 st.write("")
@@ -126,14 +133,22 @@ if st.button("Compress Images"):
                     f.write(uploaded_file.getbuffer())
 
             # Resize and compress images
-            compressed_folder = resize_images_in_directory(temp_directory, target_size, quality)
+            compressed_folder, compressed_files = resize_images_in_directory(temp_directory, target_size, quality)
 
-            # Zip the compressed folder
-            zip_path = "compressed_images.zip"
-            zip_folder(compressed_folder, zip_path)
+            if len(compressed_files) == 1:
+                # Only one image compressed, provide the image directly
+                single_image_path = compressed_files[0]
+                st.success("Compression finished.")
+                st.download_button("Download Compressed Image", data=open(single_image_path, "rb"),
+                                   file_name=os.path.basename(single_image_path))
+            else:
+                # Multiple images compressed, zip them
+                zip_path = "compressed_images.zip"
+                zip_folder(compressed_folder, zip_path)
 
-            st.success("Compression finished.")
-            st.download_button("Download Compressed Images", data=open(zip_path, "rb"), file_name="compressed_images.zip")
+                st.success("Compression finished.")
+                st.download_button("Download Compressed Images", data=open(zip_path, "rb"),
+                                   file_name="compressed_images.zip")
 
             # Clean up temporary directories and files
             clean_up(temp_directory)
@@ -145,7 +160,8 @@ st.markdown("---")
 st.write("")
 
 st.header("How to use")
-st.write("**Compressing images** before uploading to your website is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
+st.write(
+    "**Compressing images** before uploading to your website is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
 st.write("""
 1. Upload multiple images or entire folders.
 2. Set the JPEG quality using the slider.
