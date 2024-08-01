@@ -152,3 +152,96 @@ if st.button("Compress Images"):
             clean_up(compressed_folder)
     else:
         st.warning("Please upload at least one image.")
+
+
+# Custom CSS
+st.markdown(
+    """
+    <style>
+            @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    
+            .appview-container {
+                animation: fadeInSlideUp 1s ease-in-out forwards;
+            }
+            
+            h1 {
+                font-family: "DM Serif Display", serif;
+                color: #000;
+                font-weight: 500;
+                font-size: calc(1.475rem + 3vw);
+                max-font-size: 3rem;
+                margin-top: 80px;
+                margin-bottom: 20px;
+            }
+    
+            @media (min-width: 1320px) {
+                h1 {
+                    font-size: 4rem;
+                }
+            }
+    
+            p {
+                font-family: "Inter", sans-serif;
+            }
+    
+            header{
+            background: transparent!important;
+            pointer-events: none; /* Allow clicks to pass through */
+            }
+    
+            header * {
+            pointer-events: initial;
+            }
+    
+            #navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                padding-top: 0rem;
+                background:white;
+                z-index: 100;
+            }
+    
+            #logocontainer {
+                max-width: 1320px;
+                margin: auto;
+                padding: 8px 20px 8px 20px;
+            }
+    
+            #logo {
+                box-shadow: none !important;
+                height: 55px;
+                z-index: 1000000000;
+                margin-top: .40625rem;
+                margin-bottom: .40625rem;
+            }
+    
+            .element-container div div:has(> img) {
+                width: 100%;
+                display: flex;
+            }
+    
+            .element-container div div img {
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+                margin: auto;
+            }
+            
+            @keyframes fadeInSlideUp {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+            }
+    </style>
+    <div id="navbar">
+        <div id="logocontainer">
+            <a href="https://xn--gbs-qla.com/" target="_blank">
+                <img src="https://xn--gbs-qla.com/assets/images/logo/logo-dark.svg" class="logo" id="logo">
+            </a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True
+)
