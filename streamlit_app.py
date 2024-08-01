@@ -169,15 +169,14 @@ st.markdown(
                 font-family: "DM Serif Display", serif;
                 color: #000;
                 font-weight: 500;
-                font-size: calc(1.475rem + 3vw);
-                max-font-size: 3rem;
-                margin-top: 80px;
+                font-size: calc(1.475rem + 1.85vw);
+                margin-top: 30px;
                 margin-bottom: 20px;
             }
     
             @media (min-width: 1320px) {
                 h1 {
-                    font-size: 4rem;
+                    font-size: 3rem;
                 }
             }
     
