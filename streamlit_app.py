@@ -112,19 +112,6 @@ quality = st.slider("JPEG Quality in %", 5, 100, 50, step=5, format="%d")
 # Combined slider and input field for target size with increments of 10
 target_size = st.slider("Target Size (long side)", 500, 3000, 1500, step=10, format="%d")
 
-st.markdown("---")
-st.write("")
-
-st.write("**Compressing images** before uploading to your website is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
-st.header("How to use")
-st.write("""
-1. Upload multiple images or entire folders.
-2. Set the JPEG quality using the slider.
-3. Set the maximum target size for the longest image side using the slider.
-4. Click "Compress Images".
-5. Download all compressed images as a zip file once the process is complete.
-""")
-
 if st.button("Compress Images"):
     if uploaded_files:
         with st.spinner("Compressing images..."):
@@ -154,6 +141,18 @@ if st.button("Compress Images"):
     else:
         st.warning("Please upload at least one image.")
 
+st.markdown("---")
+st.write("")
+
+st.header("How to use")
+st.write("**Compressing images** before uploading to your website is a game-changer for **speedy load times**, **awesome user experience**, and **cutting bandwidth costs**. High-res images can drag your site down, so let's compress them! With this app, you can **bulk compress images** in no time, keeping your site **fast and smooth**.")
+st.write("""
+1. Upload multiple images or entire folders.
+2. Set the JPEG quality using the slider.
+3. Set the maximum target size for the longest image side using the slider.
+4. Click "Compress Images".
+5. Download all compressed images as a zip file once the process is complete.
+""")
 
 # Custom CSS
 st.markdown(
