@@ -176,6 +176,8 @@ st.markdown(
             
             h2{
                 font-family: "DM Serif Display", serif;
+                color: #000;
+                font-weight: 500;
             }
     
             @media (min-width: 1320px) {
